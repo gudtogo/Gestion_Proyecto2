@@ -1,6 +1,6 @@
-from Token import Token
+from .Token import Token
 class Board:
-    def __init__(self,table):
+    def __init__(self,table = []):
         self.table = []
 
     def create_board(self):
