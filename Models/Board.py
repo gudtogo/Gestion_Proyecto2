@@ -25,7 +25,7 @@ class Board:
                       ["*", "*" , "*" , "*" , "*" , "*" ,  39 , 38  , 37  , "*" , "*" , "*" , "*" , "*" , "*" ],
                       ]
 
-    def return_initial_position(self,color):
+    def initial_position(self,color):
         if color == "red":
             return 14
         if color == "yellow":
@@ -35,7 +35,7 @@ class Board:
         if color == "green":
             return 1
         
-    def return_final_position(self,color):
+    def final_position(self,color):
         if color == "red":
             return 12
         if color == "yellow":

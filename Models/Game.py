@@ -37,10 +37,14 @@ class Game:
                 players = self.define_turns(players)
         return players[0].color
 
-    def next_player(self, actual_player):
+    def next_player(self, actual_player,players):
         clockwise = ["green", "red", "blue", "yellow"]
         actual_index = clockwise.index(actual_player)
-        next_index = (actual_index+ 1) % len(clockwise)
-        return clockwise[next_index]
+        available_colors = [player.color for player in players]
+        while True:
+            actual_index = (actual_index + 1) % len(clockwise)
+            next_color = clockwise[actual_index]
+            if next_color in available_colors:
+                return next_color
         
            
