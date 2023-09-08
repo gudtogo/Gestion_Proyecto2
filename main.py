@@ -3,45 +3,86 @@ from Models.Token import Token
 from Models.Game import Game
 from Models.Board import Board
 from time import sleep
+import random
+import os
+
 def main():
-#-----SE DEFINEN PARAMETROS COMO JUGADOES Y QUIÉN EMPIEZA ---------
+    # Inicialización de la partida
     game_board = Board()
+    game_board.create_board()
     game = Game()
     players = int(input("Cuántos jugadores juegan? 2-4"))
     list_players = game.define_players(players)
+    tokens = [["","","",""],["","","",""],["","","",""],["","","",""]]
+    for i in range(len(list_players)): 
+        tokens[i]= list_players[i].tokens
+
     actual_player= game.check_turns(list_players)
-    
-#-----------INICIO DE LA PARTIDA-------------------
 
-    print("Comienza jugando el jugador color: ", actual_player) 
     while True:
-        for p in list_players:
-            if p.color == actual_player:
-                actual_player = p
-                break
-        
+        # Obtener el jugador actual
+        actual_player = get_player_by_color(list_players, actual_player)
+
         while True:
+            # Obtener las listas de tokens de cada color
+            Rt = list_players[0].tokens
+            Bt = list_players[1].tokens
+            Yt = list_players[2].tokens if len(list_players) > 2 else ["","","",""]
+            Gt = Gt = list_players[3].tokens if len(list_players) > 3 else ["","","",""]          
+            # Tirar el dado
             dice = actual_player.roll_dice()
-            print("El jugador tira el número: ", dice)
-
-            if dice == 1 or dice == 6:
-                if actual_player.available_tokens() == False: #Si no hay tokens disponibles para avanzar
-                    token = actual_player.box_token()       #Saca uno del tablero
-                    token.exit_box(game_board.initial_position(actual_player.color))
-                else:
-                    token = actual_player.available_tokens()    #Si hay tokens disponibles para avanzar
-                    token.move(dice, game_board.final_position(actual_player.color)) #Lo hace avanzar
+            print("El jugador", actual_player.color, "tira el número:", dice)
+            road = game_board.road(actual_player.color)
+            # Movimiento de tokens
+            if dice in (1, 6):
+                token = get_available_or_boxed_token(actual_player, game_board,dice,Rt, Bt, Gt,Yt)
             else:
+                if actual_player.available_tokens() != False:
+                    token = actual_player.available_tokens()
+                    move_token(token,dice,game_board,Rt,Bt,Gt,Yt,road)
                 break
-        token = actual_player.available_tokens()
-        if token != False:
-            token.move(dice, game_board.final_position(actual_player.color)) #Lo hace avanzar
 
 
-        actual_player= game.next_player(actual_player.color,list_players)     
-        print("Ahora le toca el jugador color: ", actual_player)
+
+        # Cambiar al siguiente jugador
+        actual_player = game.next_player(actual_player.color, list_players)
+        print("Ahora le toca al jugador color:", actual_player)
+       
         sleep(5)
 
+def get_player_by_color(players, color):
+    return next((p for p in players if p.color == color), None)
+
+def get_available_or_boxed_token(player, game_board, dice,Rt, Bt, Gt,Yt):
+    road = game_board.road(player.color)
+    if not player.available_tokens():
+        token = player.box_token()
+        if token:
+            token.exit_box(road[0])
+            game_board.print_board(Rt, Bt, Gt,Yt)
+    elif not player.box_token():
+        token = player.available_tokens()
+        if token:
+            move_token(token,dice,game_board,Rt, Bt, Gt,Yt,road)
+    else:
+        selec = random.randint(0, 1)
+        if selec == 0:
+            token = player.box_token()
+            token.exit_box(road[0])
+            game_board.print_board(Rt, Bt, Gt,Yt)
+        else:
+            token = player.available_tokens()
+            if token:
+                move_token(token,dice,game_board,Rt, Bt, Gt,Yt,road)
+    return token
+
+def move_token(token, dice, game_board, Rt, Bt, Gt, Yt, road):
+    for i in range(dice):
+        token.move(road)
+        os.system("cls")  # Cambiar a "clear" en Unix
+        game_board.print_board(Rt, Bt, Gt, Yt)
+        sleep(1) 
+    
 
 if __name__ == "__main__":
     main()
