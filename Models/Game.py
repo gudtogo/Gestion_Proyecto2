@@ -3,6 +3,10 @@ import random
 
 class Game:
 
+    def __init__(self, num_players):
+        self.players = self.define_players(num_players)
+        pass
+
     def define_players(self, num_players):
         colors = ["red", "blue", "green", "yellow"]
         players_list = []
@@ -12,6 +16,8 @@ class Game:
             else:
                 player = Player(colors[i], False)
             players_list.append(player)
+
+        self.players = players_list
         return players_list
 
     
