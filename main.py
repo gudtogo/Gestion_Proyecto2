@@ -24,6 +24,7 @@ def main():
             print("GANA EL JUGADOR COLOR", actual_player.color)
 
         token_data(actual_player)
+        input("Presiona Enter para pasar al siguiente turno...")
         while True:
             # Obtener las listas de tokens de cada color
             Rt = list_players[0].tokens
