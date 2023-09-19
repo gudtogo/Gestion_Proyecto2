@@ -1,11 +1,7 @@
 from .Player import Player
 import random
-
+from .Token import Token
 class Game:
-
-    def __init__(self, num_players):
-        self.players = self.define_players(num_players)
-        pass
 
     def define_players(self, num_players):
         colors = ["red", "blue", "green", "yellow"]
@@ -16,8 +12,6 @@ class Game:
             else:
                 player = Player(colors[i], False)
             players_list.append(player)
-
-        self.players = players_list
         return players_list
 
     
@@ -62,4 +56,13 @@ class Game:
             if next_color in available_colors:
                 return next_color
 
-           
+    def check_same_position(self,players,actual_token):
+        tokens = []
+        for player in players:
+            tokens.extend(player.tokens)
+        for i, token1 in enumerate(tokens):
+            for j, token2 in enumerate(tokens):
+                if i != j and token1.position == token2.position and token2!= actual_token:
+                    token2.state = "box"
+                    token2.position = 0
+        return False

@@ -2,10 +2,9 @@ from .Token import Token
 import random 
 
 class Player:
-    def __init__(self,color,play = False, turn=0): #Clase de jugador que posee un color que es lo que lo distingue, 4 tokens y un atributo que es True si está jugando o False si no
-        self.turn = turn
+    def __init__(self,color,play = False): #Clase de jugador que posee un color que es lo que lo distingue, 4 tokens y un atributo que es True si está jugando o False si no
         self.color = color
-        self.tokens = [Token(0,"box",color, i) for i in range(4)]
+        self.tokens = [Token(0,"box",color) for _ in range(4)]
         self.play = play
         
         
@@ -23,7 +22,7 @@ class Player:
 
     def available_tokens(self):
         for i in self.tokens:
-            if i.state == "available" or i.state == "coronate":
+            if i.state == "available":
                 return i
                 break
         return False

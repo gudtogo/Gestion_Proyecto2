@@ -39,7 +39,7 @@ class Board:
         bf =["B","B","B","B","B","B"]
         gf =["G","G","G","G","G","G"]
         self.table = [["🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ,  11 , 12  , 13  , "🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ],
-                      ["🟫", "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ,  10 ,rf[0], 14  , "🟫" , "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ],
+                      ["🟫","⬜", "⬜" , "⬜" , "⬜" , "🟫" ,  10 ,rf[0], 14  , "🟫" , "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ],
                       ["🟫", "Gt1" , "⬜" , "Gt3" , "⬜" , "🟫" ,  9  ,rf[1], 15  , "🟫" , "Rt1" , "⬜" , "Rt3" , "⬜" , "🟫" ],
                       ["🟫", "Gt2" , "⬜" , "Gt4" , "⬜" , "🟫" ,  8  ,rf[2], 16  , "🟫" , "Rt2" , "⬜" , "Rt4" , "⬜" , "🟫" ],
                       ["🟫", "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ,  7  ,rf[3], 17  , "🟫" , "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ],
@@ -69,6 +69,16 @@ class Board:
     def token_in_box(self,lt,index):
         
         if lt[index].state == "box":
+            return True
+        else:
+            return False
+
+    def no_token_there(self, Rt, Bt, Yt, Gt, cell):
+        # Verificar si cell no está en ninguna de las listas de posiciones
+        if (cell not in [t.position for t in Rt] and
+            cell not in [t.position for t in Bt] and
+            cell not in [t.position for t in Yt] and
+            cell not in [t.position for t in Gt]):
             return True
         else:
             return False
@@ -162,16 +172,16 @@ class Board:
                     if cell == Yt[3].position:
                         token_color = "🟡"
                         do = False
-                    if cell == 14:
+                    if cell == 14 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
                         token_color = "🟥"
                         do = False
-                    elif cell == 1:
+                    elif cell == 1 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
                         token_color = "🟩"
                         do = False     
-                    elif cell == 27:
+                    elif cell == 27 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
                         token_color = "🟦"
                         do = False
-                    elif cell == 40:
+                    elif cell == 40 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
                         token_color = "🟨"
                         do = False
                     else:
