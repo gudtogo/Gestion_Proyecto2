@@ -1,7 +1,10 @@
 from .Player import Player
 import random
-from .Token import Token
+
+from time import sleep
 class Game:
+    def __init__(self):
+        self.winners = 0
 
     def define_players(self, num_players):
         colors = ["red", "blue", "green", "yellow"]
@@ -56,13 +59,92 @@ class Game:
             if next_color in available_colors:
                 return next_color
 
-    def check_same_position(self,players,actual_token):
-        tokens = []
+    def tokens_same_position(self, players, actual_token):
+        color_mapping = {
+            "green_2": "💚",  #Simbolo para 2 coronados
+            "red_2": "❤️ ",
+            "yellow_2": "💛 ",
+            "blue_2": "💙 ",
+            "green_3": "📗",  #Simbolo para 3 coronados
+            "red_3": "📕",
+            "yellow_3": "📒",
+            "blue_3": "📘",
+            "green_4": "✅", #Simbolo para 4 coronados
+            "red_4": "📛",
+            "yellow_4": "⚠️",
+            "blue_4": "🚹",             
+        }
+        var = False
+        same_color_tokens = []
+
+        # Obtener todos los tokens de todos los jugadores
+        all_tokens = [actual_token]
         for player in players:
-            tokens.extend(player.tokens)
-        for i, token1 in enumerate(tokens):
-            for j, token2 in enumerate(tokens):
-                if i != j and token1.position == token2.position and token2!= actual_token:
-                    token2.state = "box"
-                    token2.position = 0
-        return False
+            all_tokens.extend(player.tokens)
+
+        # Buscar tokens en la misma posición y del mismo color
+        token_igual = False
+        for token2 in all_tokens:
+            if token2 != actual_token:
+                if token2.position == actual_token.position:
+                    if token2.color == actual_token.color:
+                        if token2 not in same_color_tokens:
+                            same_color_tokens.append(token2)
+                        if actual_token not in same_color_tokens:
+                            same_color_tokens.append(actual_token)
+                    else:
+                        token2.state = "box"
+                        token2.position = 0
+                        token2.simbol = token2.define_simbol(token2.color)
+                    var = True
+                    print(token2.color,actual_token.color)
+
+        total = len(same_color_tokens)
+        for t in range(len(same_color_tokens)):
+            sleep(4)
+            same_color_tokens[t].state = "coronate"+str(total)
+
+        for t in same_color_tokens:
+            if t.color == "red" and "2" in t.state:
+                t.simbol = color_mapping["red_2"]
+            if t.color == "red" and "3" in t.state:
+                t.simbol = color_mapping["red_3"]
+            if t.color == "red" and "4" in t.state:
+                t.simbol = color_mapping["red_4"]
+            if t.color == "blue" and "2" in t.state:
+                t.simbol = color_mapping["blue_2"]
+            if t.color == "blue" and "3" in t.state:
+                t.simbol = color_mapping["blue_3"]
+            if t.color == "blue" and "4" in t.state:
+                t.simbol = color_mapping["blue_4"]
+            if t.color == "yellow" and "2" in t.state:
+                t.simbol = color_mapping["yellow_2"]
+            if t.color == "yellow" and "3" in t.state:
+                t.simbol = color_mapping["yellow_3"]
+            if t.color == "yellow" and "4" in t.state:
+                t.simbol = color_mapping["yellow_4"]
+            if t.color == "green" and "2" in t.state:
+                t.simbol = color_mapping["green_2"]
+            if t.color == "green" and "3" in t.state:
+                t.simbol = color_mapping["green_3"]
+            if t.color == "green" and "4" in t.state:
+                t.simbol = color_mapping["green_4"]
+            print(t.state)
+        return same_color_tokens
+
+    def get_coronated_tokens(self,token,Rt,Bt,Gt,Yt):
+        var = False
+        coronated_tokens = []
+        if token in Rt:
+            tokens = Rt
+        elif token in Bt:
+            tokens = Bt
+        elif token in Gt:
+            tokens = Gt
+        elif token in Yt:
+            tokens = Yt
+        for t in tokens: #ve si el jugador tiene tokens coronados
+            if token.state == t.state:
+                coronated_tokens.append(t)
+        return coronated_tokens
+    

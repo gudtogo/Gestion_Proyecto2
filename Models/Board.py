@@ -29,15 +29,26 @@ blue_road = [27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,4
 green_road = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51]
 yellow_road = [40,41,42,43,44,45,46,47,48,49,50,51,52,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
 
+
 class Board:
     def __init__(self,table = []):
         self.table = []
 
+    def final_road(self,color):
+        if color == "red":
+            return ["R1","R2","R3","R4","R5","R6"]
+        elif color == "blue":
+            return ["B1","B2","B3","B4","B5","B6"]
+        elif color == "green":
+            return ["G1","G2","G3","G4","G5","G6"]
+        elif color == "yellow":
+            return ["Y1","Y2","Y3","Y4","Y5","Y6"]
+
     def create_board(self):
-        yf =["Y","Y","Y","Y","Y","Y"]
-        rf=["R","R","R","R","R","R"]
-        bf =["B","B","B","B","B","B"]
-        gf =["G","G","G","G","G","G"]
+        yf =["Y1","Y2","Y3","Y4","Y5","Y6"]
+        rf=["R1","R2","R3","R4","R5","R6"]
+        bf =["B1","B2","B3","B4","B5","B6"]
+        gf =["G1","G2","G3","G4","G5","G6"]
         self.table = [["🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ,  11 , 12  , 13  , "🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ],
                       ["🟫","⬜", "⬜" , "⬜" , "⬜" , "🟫" ,  10 ,rf[0], 14  , "🟫" , "⬜" , "⬜" , "⬜" , "⬜" , "🟫" ],
                       ["🟫", "Gt1" , "⬜" , "Gt3" , "⬜" , "🟫" ,  9  ,rf[1], 15  , "🟫" , "Rt1" , "⬜" , "Rt3" , "⬜" , "🟫" ],
@@ -55,7 +66,7 @@ class Board:
                       ["🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ,  39 , 38  , 37  , "🟫", "🟫" , "🟫" , "🟫" , "🟫" , "🟫" ],
                       ]
 
-    def road(self,color):
+    def get_player_road(self,color):
         if color == "red":
             return red_road
         if color == "yellow":
@@ -67,11 +78,11 @@ class Board:
 
 
     def token_in_box(self,lt,index):
-        
         if lt[index].state == "box":
             return True
         else:
             return False
+
 
     def no_token_there(self, Rt, Bt, Yt, Gt, cell):
         # Verificar si cell no está en ninguna de las listas de posiciones
@@ -82,6 +93,44 @@ class Board:
             return True
         else:
             return False
+        
+    def is_coronated(self,token):
+        if "coronated" in token.state:
+            print("EL TOKEN DE COLOR", token.color, "ESTA CORONADO Y ESTA BIEN EN LA FUNCIÓN BOARD")
+            return True
+        else:
+            return False
+
+    def return_simbol(self,token):
+        if token.color == "red":
+            print(token.state)
+            if "2" in token.state:
+                return "❤️"
+            elif "3" in token.state:
+                return "📕"
+            elif "4" in token.state:
+                return "📛"
+        elif token.color == "blue":
+            if "2" in token.state:
+                return "💙"
+            elif "3" in token.state:
+                return "📘"
+            elif "4" in token.state:
+                return "🚹"
+        elif token.color == "green":
+            if "2" in token.state:
+                return "💚"
+            elif "3" in token.state:
+                return "📗"
+            elif "4" in token.state:
+                return "✅"
+        elif token.color == "yellow":
+            if "2" in token.state:
+                return "💛"
+            elif "3" in token.state:
+                return "📒"
+            elif "4" in token.state:
+                return "⚠️"
 
 
     def print_board(self, Rt, Bt, Yt, Gt):
@@ -102,10 +151,42 @@ class Board:
             "Gt2": "🟢",
             "Gt3": "🟢",
             "Gt4": "🟢",
-            "Y" : "🟨",
-            "R" : "🟥",
-            "B" : "🟦",
-            "G" : "🟩",
+            "Y1" : "🟨",
+            "Y2" : "🟨",
+            "Y3" : "🟨",
+            "Y4" : "🟨",
+            "Y5" : "🟨",
+            "Y6" : "🟨",
+            "R1" : "🟥",
+            "R2" : "🟥",
+            "R3" : "🟥",
+            "R4" : "🟥",
+            "R5" : "🟥",
+            "R6" : "🟥",
+            "B1" : "🟦",
+            "B2" : "🟦",
+            "B3" : "🟦",
+            "B4" : "🟦",
+            "B5" : "🟦",
+            "B6" : "🟦",
+            "G1" : "🟩",
+            "G2" : "🟩",
+            "G3" : "🟩",
+            "G4" : "🟩",
+            "G5" : "🟩",
+            "G6" : "🟩",
+            "green_2": "💚",  #Simbolo para 2 coronados
+            "red_2": "❤️",
+            "yellow_2": "💛",
+            "blue_2": "💙",
+            "green_3": "📗",  #Simbolo para 3 coronados
+            "red_3": "📕",
+            "yellow_3": "📒",
+            "blue_3": "📘",
+            "green_4": "✅", #Simbolo para 4 coronados
+            "red_4": "📛",
+            "yellow_4": "⚠️",
+            "blue_4": "🚹",             
         }
         for index in range(4):
             if not self.token_in_box(Rt, index):
@@ -125,52 +206,52 @@ class Board:
                 if isinstance(cell, int):
                     # Si la celda es un entero, se trata de una posición de inicio/fin
                     if cell == Rt[0].position:
-                        token_color = "🔴"
+                        token_color =  Rt[0].simbol
                         do = False
                     if cell == Rt[1].position:
-                        token_color = "🔴"
+                        token_color =  Rt[1].simbol
                         do = False
                     if cell == Rt[2].position:
-                        token_color = "🔴"
+                        token_color =  Rt[2].simbol
                         do = False
                     if cell == Rt[3].position:
-                        token_color = "🔴"
+                        token_color =  Rt[3].simbol
                         do = False
                     if cell == Gt[0].position:
-                        token_color = "🟢"
+                        token_color = Gt[0].simbol
                         do = False
                     if cell == Gt[1].position:
-                        token_color = "🟢"
+                        token_color = Gt[1].simbol
                         do = False
                     if cell == Gt[2].position:
-                        token_color = "🟢"
+                        token_color = Gt[2].simbol
                         do = False
                     if cell == Gt[3].position:
-                        token_color = "🟢"
+                        token_color = Gt[3].simbol
                         do = False
                     if cell == Bt[0].position:
-                        token_color = "🔵"
+                        token_color = Bt[0].simbol
                         do = False
                     if cell == Bt[1].position:
-                        token_color = "🔵"
+                        token_color = Bt[1].simbol
                         do = False
                     if cell == Bt[2].position:
-                        token_color = "🔵"
+                        token_color = Bt[2].simbol
                         do = False
                     if cell == Bt[3].position:
-                        token_color = "🔵"
+                        token_color = Bt[3].simbol
                         do = False
                     if cell == Yt[0].position:
-                        token_color = "🟡"
+                        token_color = Yt[0].simbol
                         do = False
                     if cell == Yt[1].position:
-                        token_color = "🟡"
+                        token_color = Yt[1].simbol
                         do = False
                     if cell == Yt[2].position:
-                        token_color = "🟡"
+                        token_color = Yt[2].simbol
                         do = False
                     if cell == Yt[3].position:
-                        token_color = "🟡"
+                        token_color = Yt[3].simbol
                         do = False
                     if cell == 14 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
                         token_color = "🟥"
@@ -192,6 +273,67 @@ class Board:
                 else:
                     if cell in color_mapping:
                         token_color = color_mapping[cell]
+                        
+                    if cell == Rt[0].position:
+                        token_color =  Rt[0].simbol
+                        do = False
+                    if cell == Rt[1].position:
+                        token_color =  Rt[1].simbol
+                        do = False
+                    if cell == Rt[2].position:
+                        token_color =  Rt[2].simbol
+                        do = False
+                    if cell == Rt[3].position:
+                        token_color =  Rt[3].simbol
+                        do = False
+                    if cell == Gt[0].position:
+                        token_color = Gt[0].simbol
+                        do = False
+                    if cell == Gt[1].position:
+                        token_color = Gt[1].simbol
+                        do = False
+                    if cell == Gt[2].position:
+                        token_color = Gt[2].simbol
+                        do = False
+                    if cell == Gt[3].position:
+                        token_color = Gt[3].simbol
+                        do = False
+                    if cell == Bt[0].position:
+                        token_color = Bt[0].simbol
+                        do = False
+                    if cell == Bt[1].position:
+                        token_color = Bt[1].simbol
+                        do = False
+                    if cell == Bt[2].position:
+                        token_color = Bt[2].simbol
+                        do = False
+                    if cell == Bt[3].position:
+                        token_color = Bt[3].simbol
+                        do = False
+                    if cell == Yt[0].position:
+                        token_color = Yt[0].simbol
+                        do = False
+                    if cell == Yt[1].position:
+                        token_color = Yt[1].simbol
+                        do = False
+                    if cell == Yt[2].position:
+                        token_color = Yt[2].simbol
+                        do = False
+                    if cell == Yt[3].position:
+                        token_color = Yt[3].simbol
+                        do = False
+                    if cell == 14 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
+                        token_color = "🟥"
+                        do = False
+                    elif cell == 1 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
+                        token_color = "🟩"
+                        do = False     
+                    elif cell == 27 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
+                        token_color = "🟦"
+                        do = False
+                    elif cell == 40 and self.no_token_there(Rt,Bt,Yt,Gt,cell):
+                        token_color = "🟨"
+                        do = False
 
                     if token_color is not None:
                         print(token_color, end=" ")
