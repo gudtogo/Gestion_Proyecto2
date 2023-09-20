@@ -22,7 +22,10 @@ class Player:
     def available_tokens(self):
         tokens = []
         for i in self.tokens:
-            if i.state == "available" or "coronate" in i.state and "6" not in self.position:
+            if i.state == "available" or "coronate" in i.state:
+                if isinstance(i.position, str):
+                        if "6" in i.position:
+                            continue
                 tokens.append(i)
         if len(tokens) > 0:
             return random.choice(tokens)

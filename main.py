@@ -92,7 +92,7 @@ def move_coronated_token(list_players,actual_token,Rt,Bt,Gt,Yt,dice,road,game,ga
         print("AVANZANDO tokens coronados: ", dice)
         game_board.print_board(Rt, Bt, Gt, Yt)
     if game.tokens_same_position(list_players,token):
-            sleep(4)
+            sleep(1)
             os.system("cls")
             print("Cayeron dos tokens juntos")
             print(token.state)
@@ -111,7 +111,7 @@ def move_token(token, dice, game_board, Rt, Bt, Gt, Yt, road,game,list_players):
             sleep(1) 
 
         if game.tokens_same_position(list_players,token):
-            sleep(4)
+            sleep(2)
             os.system("cls")
             print("Cayeron dos tokens juntos")
             print(token.state)
@@ -125,7 +125,7 @@ def token_data(actual_player):
     for p in actual_player.tokens:
         print("Token ",count," = ",p.state,p.position)
         count+=1
-    sleep(5)
+    sleep(1)
 
 if __name__ == "__main__":
     main()
