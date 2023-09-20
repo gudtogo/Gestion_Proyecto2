@@ -17,13 +17,9 @@ def main():
     actual_player= game.check_turns(list_players)
 
     while True:
-
+        
         actual_player = get_player_by_color(list_players, actual_player)
-        if actual_player.win():
-            game.winners +=1
-            print("GANA EL JUGADOR COLOR", actual_player.color)
-
-        token_data(actual_player)
+        
         input("Presiona Enter para pasar al siguiente turno...")
         while True:
             # Obtener las listas de tokens de cada color
@@ -31,7 +27,7 @@ def main():
             Bt = list_players[1].tokens
             Yt = list_players[2].tokens if len(list_players) > 2 else ["","","",""]
             Gt = list_players[3].tokens if len(list_players) > 3 else ["","","",""]  
-
+           
             # Tirar el dado
             dice = actual_player.roll_dice()
             print("El jugador", actual_player.color, "tira el número:", dice)
@@ -50,10 +46,13 @@ def main():
 
 
         # Cambiar al siguiente jugador
+        if not token_data(actual_player):
+            print("El juego ha terminado")
+            print("Gana el jugador: ",actual_player.color)
+            break
         actual_player = game.next_player(actual_player.color, list_players)
         print("Ahora le toca al jugador color:", actual_player)
        
-        sleep(3)
 
 
 def get_player_by_color(players, color):
@@ -91,10 +90,9 @@ def move_coronated_token(list_players,actual_token,Rt,Bt,Gt,Yt,dice,road,game,ga
         os.system("cls")
         print("AVANZANDO tokens coronados: ", dice)
         game_board.print_board(Rt, Bt, Gt, Yt)
+        sleep(1)
     if game.tokens_same_position(list_players,token):
-            sleep(1)
             os.system("cls")
-            print("Cayeron dos tokens juntos")
             print(token.state)
             game_board.print_board(Rt, Bt, Gt, Yt)
 
@@ -113,7 +111,6 @@ def move_token(token, dice, game_board, Rt, Bt, Gt, Yt, road,game,list_players):
         if game.tokens_same_position(list_players,token):
             sleep(2)
             os.system("cls")
-            print("Cayeron dos tokens juntos")
             print(token.state)
             game_board.print_board(Rt, Bt, Gt, Yt)
            
@@ -121,11 +118,19 @@ def move_token(token, dice, game_board, Rt, Bt, Gt, Yt, road,game,list_players):
 
 def token_data(actual_player):
     count = 1
+    winner = 0
     print("JUGADOR : ",actual_player.color)
     for p in actual_player.tokens:
         print("Token ",count," = ",p.state,p.position)
         count+=1
-    sleep(1)
+        if isinstance(p.position,str):
+            if "6" in p.position:
+                winner += 1
+    if winner == 4:
+        return False
+    return True
+ 
+
 
 if __name__ == "__main__":
     main()

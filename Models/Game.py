@@ -63,8 +63,8 @@ class Game:
         color_mapping = {
             "green_2": "💚",  #Simbolo para 2 coronados
             "red_2": "❤️ ",
-            "yellow_2": "💛 ",
-            "blue_2": "💙 ",
+            "yellow_2": "💛",
+            "blue_2": "💙",
             "green_3": "📗",  #Simbolo para 3 coronados
             "red_3": "📕",
             "yellow_3": "📒",
@@ -101,7 +101,6 @@ class Game:
 
         total = len(same_color_tokens)
         for t in range(len(same_color_tokens)):
-            sleep(4)
             same_color_tokens[t].state = "coronate"+str(total)
 
         for t in same_color_tokens:
@@ -129,7 +128,6 @@ class Game:
                 t.simbol = color_mapping["green_3"]
             if t.color == "green" and "4" in t.state:
                 t.simbol = color_mapping["green_4"]
-            print(t.state)
         return same_color_tokens
 
     def get_coronated_tokens(self,token,Rt,Bt,Gt,Yt):
